@@ -1,8 +1,4 @@
 libgl1
-libglib2.0-0t64
 libsm6
 libxrender1
 libxext6
-libavcodec-dev
-libavformat-dev
-libavdevice-dev
