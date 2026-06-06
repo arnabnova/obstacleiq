@@ -1,3 +1,11 @@
 libgl1
 libxrender1
 libsm6
+pkg-config
+libavformat-dev
+libavcodec-dev
+libavdevice-dev
+libavutil-dev
+libswscale-dev
+libswresample-dev
+libavfilter-dev
