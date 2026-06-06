@@ -5,7 +5,7 @@ import numpy as np
 import streamlit as st
 from streamlit_webrtc import webrtc_streamer, VideoProcessorBase, RTCConfiguration
 
-from Detector import ObjectDetector, get_decision
+from detector import ObjectDetector, get_decision
 
 # ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(
