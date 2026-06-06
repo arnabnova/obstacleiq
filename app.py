@@ -171,12 +171,35 @@ class ObstacleTransformer(VideoProcessorBase):
         return _av2.VideoFrame.from_ndarray(annotated, format="bgr24")
 
 
-RTC_CONFIG = RTCConfiguration({
-    "iceServers": [
+def get_rtc_config():
+    turn_username   = st.secrets.get("TURN_USERNAME", "")
+    turn_credential = st.secrets.get("TURN_CREDENTIAL", "")
+
+    ice_servers = [
         {"urls": ["stun:stun.l.google.com:19302"]},
         {"urls": ["stun:stun1.l.google.com:19302"]},
     ]
-})
+
+    if turn_username and turn_credential:
+        ice_servers += [
+            {
+                "urls": ["turn:openrelay.metered.ca:80"],
+                "username":   turn_username,
+                "credential": turn_credential,
+            },
+            {
+                "urls": ["turn:openrelay.metered.ca:443"],
+                "username":   turn_username,
+                "credential": turn_credential,
+            },
+            {
+                "urls": ["turn:openrelay.metered.ca:443?transport=tcp"],
+                "username":   turn_username,
+                "credential": turn_credential,
+            },
+        ]
+
+    return RTCConfiguration({"iceServers": ice_servers})
 
 # ── Main layout ────────────────────────────────────────────────────────────────
 col_feed, col_info = st.columns([3, 2], gap="large")
@@ -186,7 +209,7 @@ with col_feed:
     ctx = webrtc_streamer(
         key="obstacle-iq",
         video_processor_factory=ObstacleTransformer,
-        rtc_configuration=RTC_CONFIG,
+        rtc_configuration=get_rtc_config(),
         media_stream_constraints={"video": True, "audio": False},
         async_transform=True,
     )
